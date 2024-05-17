@@ -41,10 +41,14 @@ class _Task_WidgetState extends State<Task_Widget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 25),
-                        Text(
-                          'title',
-                          style: TextStyle(
-                              fontSize: 1, fontWeight: FontWeight.w400),
+                        Row(
+                          children: [
+                            Text(
+                              'title',
+                              style: TextStyle(
+                                  fontSize: 1, fontWeight: FontWeight.w400),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 5,
@@ -89,7 +93,7 @@ class _Task_WidgetState extends State<Task_Widget> {
                                 width: 90,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                  color: custom_green,
+                                  color: Color(0xffE2F6F1),
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                                 child: Padding(
@@ -97,14 +101,13 @@ class _Task_WidgetState extends State<Task_Widget> {
                                       horizontal: 12, vertical: 6),
                                   child: Row(
                                     children: [
-                                      Image.asset('images/icon_time.png'),
+                                      Image.asset('images/icon_edit.png'),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text(
                                         "edit",
                                         style: TextStyle(
-                                            color: Colors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold),
                                       ),
