@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:todo_app/const/colors.dart';
+import 'package:todo_app/data/fire_store.dart';
 import 'package:todo_app/screen/add_note_screen.dart';
 import 'package:todo_app/widgets/task_widgets.dart';
 
@@ -43,12 +44,21 @@ class _Home_ScreenState extends State<Home_Screen> {
               }
               return true;
             },
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Task_Widget();
-              },
-              itemCount: 10,
-            ),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FireStore_Datasource().stream(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }
+                  final noteslist = FireStore_Datasource().getNotes(snapshot);
+                  return ListView.builder(
+                    itemBuilder: (context, index) {
+                      final note = noteslist[index];
+                      return Task_Widget(note);
+                    },
+                    itemCount: noteslist.length,
+                  );
+                }),
           ),
         ));
   }

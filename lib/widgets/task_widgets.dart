@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/const/colors.dart';
+import 'package:todo_app/data/fire_store.dart';
+import 'package:todo_app/model/notes_model.dart';
 import 'package:todo_app/screen/edit_screen.dart';
 
 class Task_Widget extends StatefulWidget {
-  const Task_Widget({super.key});
+  Note _note;
+  Task_Widget(this._note, {super.key});
 
   @override
   State<Task_Widget> createState() => _Task_WidgetState();
 }
 
-bool isDone = false;
-
 class _Task_WidgetState extends State<Task_Widget> {
   @override
   Widget build(BuildContext context) {
+    bool isDone = widget._note.isDon;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Container(
@@ -44,7 +46,7 @@ class _Task_WidgetState extends State<Task_Widget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'title',
+                          widget._note.title,
                           style: TextStyle(
                               fontSize: 1, fontWeight: FontWeight.bold),
                         ),
@@ -54,6 +56,8 @@ class _Task_WidgetState extends State<Task_Widget> {
                             setState(() {
                               isDone = !isDone;
                             });
+                            FireStore_Datasource()
+                                .isdone(widget._note.id, isDone);
                           },
                         )
                       ],
@@ -61,7 +65,7 @@ class _Task_WidgetState extends State<Task_Widget> {
                     SizedBox(
                       height: 5,
                     ),
-                    Text('Subtitle',
+                    Text(widget._note.subtitle,
                         style: TextStyle(
                             fontSize: 1,
                             fontWeight: FontWeight.w400,
@@ -129,7 +133,7 @@ class _Task_WidgetState extends State<Task_Widget> {
                       width: 10,
                     ),
                     Text(
-                      "edit",
+                      widget._note.time,
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
@@ -148,7 +152,7 @@ class _Task_WidgetState extends State<Task_Widget> {
       decoration: BoxDecoration(
         color: Colors.white,
         image: DecorationImage(
-          image: AssetImage('images/1.png'),
+          image: AssetImage('images/${widget._note.image}.png'),
           fit: BoxFit.cover,
         ),
       ),
