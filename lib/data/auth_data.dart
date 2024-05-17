@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todo_app/data/fire_store.dart';
 
 abstract class AuthenticationDatasource {
   Future<void> register(String email, String password, String PasswordConfirm);
@@ -19,7 +20,9 @@ class AuthenticationRemote extends AuthenticationDatasource {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: email.trim(), password: password.trim())
-          .then((value) {});
+          .then((value) {
+        FireStore_Datasource().CreateUser(email);
+      });
     }
   }
 }
