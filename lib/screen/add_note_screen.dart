@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:todo_app/const/colors.dart';
 import 'package:todo_app/data/fire_store.dart';
 
@@ -16,7 +17,7 @@ class _Add_ScreenState extends State<Add_Screen> {
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
 
-  int index = 0;
+  int indexValue= 0;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green, minimumSize: Size(170, 48)),
             onPressed: () {
-              FireStore_Datasource().AddNote(subtitle.text, title.text, index);
+              FireStore_Datasource().AddNote(subtitle.text, title.text, indexValue);
               Navigator.pop(context);
             },
             child: Text(
@@ -77,16 +78,18 @@ class _Add_ScreenState extends State<Add_Screen> {
         itemCount: 4,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onDoubleTap: () {
-              index = index;
+          return InkWell(
+            onTap: () {
+              indexValue = index;
+              Logger().e(indexValue);
+              Logger().w(index);
             },
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                       width: 2,
-                      color: index == index ? custom_green : Colors.grey)),
+                      color: indexValue == index ? custom_green : Colors.grey)),
               width: 140,
               margin: EdgeInsets.all(8),
               child: Column(

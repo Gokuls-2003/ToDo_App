@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:todo_app/model/notes_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,7 +29,7 @@ class FireStore_Datasource {
           .collection('users')
           .doc(_auth.currentUser!.uid)
           .collection('notes')
-          .doc()
+          .doc(uuid.toString())
           .set({
         'id': uuid,
         'subtitle': subtitle,
@@ -47,6 +48,7 @@ class FireStore_Datasource {
     try {
       final notesList = snapshot.data!.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
+        print(data);
         return Note(
           data['id'],
           data['subtitle'],
@@ -56,6 +58,7 @@ class FireStore_Datasource {
           data['isDon'],
         );
       }).toList();
+      Logger().i(notesList);
       return notesList;
     } catch (e) {
       print(e);
@@ -63,11 +66,12 @@ class FireStore_Datasource {
     }
   }
 
-  Stream<QuerySnapshot> stream() {
+  Stream<QuerySnapshot> stream(bool isDone) {
     return _fireStore
         .collection('users')
         .doc(_auth.currentUser!.uid)
         .collection('notes')
+        .where('isDon', isEqualTo: isDone)
         .snapshots();
   }
 
@@ -116,8 +120,12 @@ class FireStore_Datasource {
           .collection('notes')
           .doc(uuid)
           .delete();
+      Logger().e((_auth.currentUser!.uid));
+      Logger().e((uuid));
+      Logger().e(("Deleted successfully"));
       return true;
     } catch (e) {
+      Logger().e((e));
       print(e);
       return true;
     }

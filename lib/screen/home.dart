@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:todo_app/const/colors.dart';
-import 'package:todo_app/data/fire_store.dart';
 import 'package:todo_app/screen/add_note_screen.dart';
-import 'package:todo_app/widgets/task_widgets.dart';
+import 'package:todo_app/widgets/stream_note.dart';
 
 class Home_Screen extends StatefulWidget {
   const Home_Screen({super.key});
@@ -27,6 +26,7 @@ class _Home_ScreenState extends State<Home_Screen> {
           child: Icon(
             Icons.add,
             size: 30,
+            color: Colors.white,
           ),
         ),
         body: SafeArea(
@@ -44,21 +44,13 @@ class _Home_ScreenState extends State<Home_Screen> {
               }
               return true;
             },
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FireStore_Datasource().stream(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
-                  }
-                  final noteslist = FireStore_Datasource().getNotes(snapshot);
-                  return ListView.builder(
-                    itemBuilder: (context, index) {
-                      final note = noteslist[index];
-                      return Task_Widget(note);
-                    },
-                    itemCount: noteslist.length,
-                  );
-                }),
+            child: Column(
+              children: [
+                Stream_note(false),
+                Text("is Done"),
+                Stream_note(true),
+              ],
+            ),
           ),
         ));
   }
